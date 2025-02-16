@@ -11,8 +11,8 @@ public class CreateCafeQuery : IRequest<Guid>
     [Required(ErrorMessage = "Cafe location is required.")]
     public required string Location { get; set; }
 
-    // Optional field, so no [Required] attribute
-    public string Logo { get; set; }
+    public IFormFile? Logo { get; set; }
+
 }
 
 

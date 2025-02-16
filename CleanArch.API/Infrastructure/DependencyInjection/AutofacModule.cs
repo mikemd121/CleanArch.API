@@ -43,7 +43,9 @@ public class AutofacModule : Module
         builder.RegisterType<CreateEmployeeQueryHandler>().As<IRequestHandler<CreateEmployeeQuery, string>>().InstancePerLifetimeScope();
         builder.RegisterType<DeleteEmployeeQueryHandler>().As<IRequestHandler<DeleteEmployeeQuery, bool>>().InstancePerLifetimeScope();
         builder.RegisterType<UpdateEmployeeQueryHandler>().As<IRequestHandler<UpdateEmployeeQuery, bool>>().InstancePerLifetimeScope();
+        builder.RegisterType<GetAllEmployeeQueryHandler>().As<IRequestHandler<GetAllEmployeeQuery, List<EmployeeDTO>>>().InstancePerLifetimeScope();
 
+        
 
     }
 }

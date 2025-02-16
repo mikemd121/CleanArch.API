@@ -1,10 +1,7 @@
-﻿using CleanArch.API.Application.Queries.CafeQueries;
-using CleanArch.API.Application.Queries.EmployeeQueries;
+﻿using CleanArch.API.Application.Queries.EmployeeQueries;
 using CleanArch.API.Domain.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CleanArch.API.Controllers
 {
@@ -19,7 +16,6 @@ namespace CleanArch.API.Controllers
             _mediator = mediator;
         }
 
-        // GET /employees?cafe=<cafe>
         [HttpGet]
         public async Task<ActionResult<List<EmployeeDTO>>> GetEmployees([FromQuery] string cafe)
         {
@@ -32,6 +28,18 @@ namespace CleanArch.API.Controllers
             return Ok(employees);
         }
 
+        [HttpGet("GetAllEmployees")]
+        public async Task<ActionResult<List<EmployeeDTO>>> GetAllEmployees()
+        {
+            var employees = await _mediator.Send(new GetAllEmployeeQuery());
+
+            if (employees == null )
+                return NotFound("No employees found for the given criteria.");
+ 
+            return Ok(employees); 
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeQuery command)
         {
@@ -39,9 +47,7 @@ namespace CleanArch.API.Controllers
             var employeeId = await _mediator.Send(command);
 
             if (employeeId == string.Empty)
-            {
                 return BadRequest(new { Message = "Employee creation failed" });
-            }
   
             return CreatedAtAction(nameof(CreateEmployee), new { id = employeeId }, new { EmployeeId = employeeId });
         }
@@ -52,38 +58,27 @@ namespace CleanArch.API.Controllers
         {
             // Ensure the request has valid data
             if (command == null || string.IsNullOrEmpty(command.Id))
-            {
                 return BadRequest(new { Message = "Invalid employee data" });
-            }
 
             var result = await _mediator.Send(command);
-
             if (result)
-            {
                 return Ok(new { Message = "Employee updated successfully" });
-            }
 
             return NotFound(new { Message = "Employee not found" });
         }
 
-        // DELETE /employee
+
         [HttpDelete]
         public async Task<IActionResult> DeleteEmployee([FromQuery] string employeeId)
         {
-            // Ensure the request has a valid employeeId
             if (string.IsNullOrEmpty(employeeId))
-            {
                 return BadRequest(new { Message = "Invalid employee ID" });
-            }
 
             var command = new DeleteEmployeeQuery { EmployeeId = employeeId };
-
             var result = await _mediator.Send(command);
 
             if (result)
-            {
                 return Ok(new { Message = "Employee deleted successfully" });
-            }
 
             return NotFound(new { Message = "Employee not found" });
         }

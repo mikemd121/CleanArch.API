@@ -14,17 +14,13 @@ namespace CleanArch.API.Application.Queries.EmployeeQueries
 
         public async Task<bool> Handle(DeleteEmployeeQuery request, CancellationToken cancellationToken)
         {
-            // Fetch the employee by ID
+
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.EmployeeId);
             if (employee == null)
-            {
-                return false; // Employee not found
-            }
+                return false; 
 
-            // Delete the employee
             await _employeeRepository.DeleteEmployeeAsync(employee);
-
-            return true; // Successfully deleted
+            return true; 
         }
     }
 }

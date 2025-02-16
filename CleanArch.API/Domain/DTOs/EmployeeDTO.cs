@@ -8,7 +8,7 @@
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
         public int DaysWorked { get; set; }
-        public string Cafe { get; set; } // Café name, can be empty if not assigned
+        public string Cafe { get; set; }
     }
 
 }

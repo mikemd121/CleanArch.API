@@ -16,27 +16,26 @@ namespace CleanArch.API.Application.Queries.CafeQueries
 
         public async Task<bool> Handle(DeleteCafeQuery request, CancellationToken cancellationToken)
         {
-            // Fetch the cafe by ID
             var cafe = await _cafeRepository.GetCafeByIdAsync(request.CafeId);
             if (cafe == null)
             {
-                return false; // Cafe not found
+                return false;
             }
 
-            // Delete all employees under this cafe
+        
             var employees = cafe.Employees; 
             if (employees != null)
             {
                 foreach (var employee in employees)
                 {
-                    await _employeeRepository.DeleteEmployeeAsync(employee); // Delete the employee
+                    await _employeeRepository.DeleteEmployeeAsync(employee);
                 }
             }
 
-            // Delete the cafe itself
+
             await _cafeRepository.DeleteCafeAsync(cafe);
 
-            return true; // Successfully deleted
+            return true; 
         }
     }
 }

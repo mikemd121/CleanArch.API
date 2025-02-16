@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CleanArch.API.Application.Queries.EmployeeQueries
 {
-    public class CreateEmployeeQuery : IRequest<string> // Returning Employee's ID
+    public class CreateEmployeeQuery : IRequest<string> 
     {
         [Required(ErrorMessage = "Employee name is required.")]
         public required string Name { get; set; }

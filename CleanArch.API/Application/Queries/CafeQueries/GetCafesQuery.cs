@@ -5,7 +5,7 @@ namespace CleanArch.API.Application.Commands.CafeCommands
 {
     public class GetCafesQuery : IRequest<List<CafeDTO>>
     {
-        public string Location { get; set; }
+        public required string Location { get; set; }
     }
 
 

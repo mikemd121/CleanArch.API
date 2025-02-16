@@ -14,23 +14,28 @@ namespace CleanArch.API.Application.Queries.CafeQueries
 
         public async Task<bool> Handle(UpdateCafeQuery request, CancellationToken cancellationToken)
         {
-            // Fetch the cafe by its ID
             var cafe = await _cafeRepository.GetCafeByIdAsync(request.CafeId);
             if (cafe == null)
             {
-                return false; // Cafe not found
+                return false; 
+            }
+            byte[]? logoBytes = null;
+            if (request.Logo != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.Logo.CopyToAsync(memoryStream);
+                    logoBytes = memoryStream.ToArray();
+                }
             }
 
-            // Update the properties of the cafe
             cafe.Name = request.Name;
             cafe.Description = request.Description;
-            cafe.Logo = request.Logo;
+            cafe.Logo = logoBytes;
             cafe.Location = request.Location;
-
-            // Save the changes to the database
             await _cafeRepository.UpdateCafeAsync(cafe);
 
-            return true; // Successfully updated
+            return true;
         }
     }
 }

@@ -12,25 +12,20 @@ namespace CleanArch.API.Application.Commands.CafeCommands
         {
             var cafes = await _cafeRepository.GetCafesAsync();
 
-            // If a location is provided, filter the cafes by location
             if (!string.IsNullOrEmpty(request.Location))
-            {
                 cafes = cafes.Where(c => c.Location.Equals(request.Location, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
 
-            // Sort by number of employees, highest first
             var sortedCafes = cafes
-          .OrderByDescending(c => c.Employees.Count) // Sort by the count of employees
+          .OrderByDescending(c => c.Employees.Count) 
           .ToList();
 
-            // Map the cafes to the DTO
             var cafeDtos = sortedCafes.Select(c => new CafeDTO
             {
                 Id = c.CafeId,
                 Name = c.Name,
                 Description = c.Description,
                 Employees = c.Employees.Count,
-                Logo = c.Logo,  // Optional
+                Logo = c.Logo != null ? Convert.ToBase64String(c.Logo) : null,
                 Location = c.Location
             }).ToList();
 

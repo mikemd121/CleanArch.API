@@ -14,14 +14,12 @@ namespace CleanArch.API.Application.Queries.EmployeeQueries
 
         public async Task<bool> Handle(UpdateEmployeeQuery request, CancellationToken cancellationToken)
         {
-            // Fetch the employee by their ID
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.Id);
             if (employee == null)
             {
-                return false; // Employee not found
+                return false;
             }
 
-            // Update the employee's properties
             employee.Name = request.Name;
             employee.EmailAddress = request.EmailAddress;
             employee.PhoneNumber = request.PhoneNumber;
@@ -29,10 +27,9 @@ namespace CleanArch.API.Application.Queries.EmployeeQueries
             employee.StartDate = request.StartDate;
             employee.CafeId = request.CafeId;
 
-            // Save the changes to the database
             await _employeeRepository.UpdateEmployeeAsync(employee);
 
-            return true; // Successfully updated
+            return true;
         }
 
     }

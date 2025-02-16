@@ -11,6 +11,8 @@ namespace CleanArch.API.Infrastructure.Repositories
         Task UpdateEmployeeAsync(Employee employee);
 
         Task DeleteEmployeeAsync(Employee employee);
+
+        Task<List<Employee>> GetAllEmployees();
     }
 
     public class EmployeeRepository : IEmployeeRepository
@@ -34,6 +36,16 @@ namespace CleanArch.API.Infrastructure.Repositories
             {
                 query = query.Where(e =>e.Cafe.Name== cafeName);
             }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<Employee>> GetAllEmployees()
+        {
+            // Query to get all employees, optionally filtered by café
+            var query = _dbContext.Employees
+                .Include(e => e.Cafe) // Eager load the Cafe for each employee
+                .AsQueryable();
 
             return await query.ToListAsync();
         }

@@ -15,10 +15,8 @@ namespace CleanArch.API.Application.Queries.EmployeeQueries
 
         public async Task<List<EmployeeDTO>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
         {
-            // Get all employees, or filter by café if provided
             var employeesQuery = await _employeeRepository.GetEmployeesAsync(request.Cafe);
 
-            // Map the employees to DTOs
             var employeeDtos = employeesQuery.Select(e => new EmployeeDTO
             {
                 Id = e.Id,
@@ -26,10 +24,10 @@ namespace CleanArch.API.Application.Queries.EmployeeQueries
                 EmailAddress = e.EmailAddress,
                 PhoneNumber = e.PhoneNumber,
                 Gender=e.Gender,
-                DaysWorked = (int)(DateTime.Now - e.StartDate).TotalDays, // Calculate days worked
-                Cafe = e.Cafe?.Name ?? string.Empty // Get the cafe's name or empty string
+                DaysWorked = (int)(DateTime.Now - e.StartDate).TotalDays,
+                Cafe = e.Cafe?.Name ?? string.Empty
             })
-            .OrderByDescending(e => e.DaysWorked) // Sort by highest number of days worked
+            .OrderByDescending(e => e.DaysWorked)
             .ToList();
 
             return employeeDtos;

@@ -33,7 +33,7 @@ public class ApplicationDbContext : DbContext
                 Name = "Cafe Mocha",
                 Description = "A cozy place to enjoy coffee and cake.",
                 Location = "Downtown",
-                Logo = "logo1.png",
+                Logo = null,
                 Employees = new List<Employee>
                 {
                     new Employee
@@ -63,7 +63,7 @@ public class ApplicationDbContext : DbContext
                 Name = "Brewed Awakening",
                 Description = "A modern coffee shop serving artisan coffee.",
                 Location = "Uptown",
-                Logo = "logo2.png",
+                Logo =null,
                 Employees = new List<Employee>
                 {
                     new Employee
